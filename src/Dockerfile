@@ -1,15 +1,16 @@
-ARG MPS_VERSION
 
 FROM jlesage/baseimage-gui:debian-12-v4 AS debian-base
 
 RUN apt update && apt install zip unzip wget -y
 
 FROM debian-base AS prepare-mps
+ARG MPS_VERSION
 
 # download MPS
 RUN mkdir /mpstmp \
     && cd /mpstmp \
-    && wget https://download.jetbrains.com/mps/2023.2/MPS-2023.2.2.tar.gz
+    && MPS_MAJOR_VERSION=`echo $MPS_VERSION | grep -oE '20[0-9]{2}\.[0-9]+'` \
+    && wget "https://download.jetbrains.com/mps/${MPS_MAJOR_VERSION}/MPS-${MPS_VERSION}.tar.gz"
 
 # extract MPS into /mps
 RUN set -e && set -x && cd /mpstmp \
