@@ -10,7 +10,7 @@ ARG MPS_VERSION="2023.2.2"
 RUN set -e \
     && mkdir /mpstmp \
     && cd /mpstmp \
-    && MPS_MAJOR_VERSION=`echo $MPS_VERSION | grep -oE '20[0-9]{2}\.[0-9]+'` \
+    && MPS_MAJOR_VERSION=`echo "$MPS_VERSION" | grep -oE '20[0-9]{2}\.[0-9]+'` \
     && wget "https://download.jetbrains.com/mps/${MPS_MAJOR_VERSION}/MPS-${MPS_VERSION}.tar.gz" \
     && tar -xf $(ls | head -n 1) \
     && mv "MPS $MPS_MAJOR_VERSION" "/mps"
@@ -48,18 +48,19 @@ RUN mkdir /mps-plugins \
     && mkdir /mps-languages \
     && mkdir -p /config/home/mps-projects \
     && ln -s "/config/home/mps-projects" "/mps-projects" \
-    && ln -s "/config/home" "/mps-user-home" \
-    && ln -s "/config/xdg/config/mps" "/mps-config"
+    && ln -s "/config/home" "/mps-user-home"
 COPY install-plugins.sh /
 
 # default MPS project
 COPY --chown=1000:1000 default-mps-project /config/home/mps-projects/default-mps-project
 
 # MPS config directory
-COPY --chown=1000:1000 mps-config /config/xdg/config/mps
-RUN mkdir -p /config/xdg/config/JetBrains \
-    && ln -s /config/xdg/config/mps "/config/xdg/config/JetBrains/MPS$(grep "mpsBootstrapCore.version=" /mps/build.properties|cut -d'=' -f2)" \
-    && ln -s "/config/xdg/config/JetBrains" "/config/xdg/config/Modelix"
+COPY --chown=1000:1000 mps-config /config/xdg/config/Modelix/current
+RUN set -e \
+    && MPS_MAJOR_VERSION="$(grep "mpsBootstrapCore.version=" /mps/build.properties|cut -d'=' -f2)" \
+    && mv "/config/xdg/config/Modelix/current" "/config/xdg/config/Modelix/MPS${MPS_MAJOR_VERSION}" \
+    && ln -s "/config/xdg/config/Modelix/MPS${MPS_MAJOR_VERSION}" "/mps-config" \
+    && ln -s "/config/xdg/config/Modelix" "/config/xdg/config/JetBrains"
 
 # permissions
 RUN    chown -R 1000:1000 /config \
