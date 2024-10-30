@@ -67,3 +67,6 @@ RUN    chown -R 1000:1000 /config \
     && chown -R 1000:1000 /mps-plugins \
     && chown -R 1000:1000 /mps-languages \
     && chown -R 1000:1000 /mps/
+
+# Run indexer
+RUN for f in /config/home/mps-projects/*; do /mps/bin/mps.sh warmup --project-dir="$f";done
