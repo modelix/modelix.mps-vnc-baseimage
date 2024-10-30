@@ -4,19 +4,16 @@ FROM jlesage/baseimage-gui:debian-12-v4 AS debian-base
 RUN apt update && apt install zip unzip wget -y
 
 FROM debian-base AS prepare-mps
-ARG MPS_VERSION
+ARG MPS_VERSION="2023.2.2"
 
-# download MPS
-RUN mkdir /mpstmp \
+# download MPS and extract into /mps
+RUN set -e \
+    && mkdir /mpstmp \
     && cd /mpstmp \
     && MPS_MAJOR_VERSION=`echo $MPS_VERSION | grep -oE '20[0-9]{2}\.[0-9]+'` \
-    && wget "https://download.jetbrains.com/mps/${MPS_MAJOR_VERSION}/MPS-${MPS_VERSION}.tar.gz"
-
-# extract MPS into /mps
-RUN set -e && set -x && cd /mpstmp \
-    && echo $(ls | head -n 1) \
+    && wget "https://download.jetbrains.com/mps/${MPS_MAJOR_VERSION}/MPS-${MPS_VERSION}.tar.gz" \
     && tar -xf $(ls | head -n 1) \
-    && mv "$(dirname "$(find . -type f -name "build.properties" | head -n 1)")" "/mps"
+    && mv "MPS $MPS_MAJOR_VERSION" "/mps"
 
 RUN echo "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5071" >> /mps/bin/mps64.vmoptions \
         && sed -i.bak '/-Xmx/d' /mps/bin/mps64.vmoptions \
