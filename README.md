@@ -13,3 +13,9 @@ These are the files and folders that are considered to be the public API of this
 | `/mps-config`         | Configuration files of MPS. They are usually create automatically after the first start, but pre-configuring MPS improves the user experience.                                                                                 |
 | `/mps-user-home`      | Home directory of the user used to run MPS.                                                                                                                                                                                    |
 | `/mps-projects`       | All sub-folders are opened as MPS projects automatically at startup. It already contains an empty default project that can be deleted when an actual project is provided.                                                      |
+
+# Environment Variables
+
+| Variable               | Description                                            |
+|------------------------|--------------------------------------------------------|
+| PRE_STARTUP_SCRIPT_URL | Download and run this shell script before starting MPS | 

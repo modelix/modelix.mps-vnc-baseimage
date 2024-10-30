@@ -36,11 +36,12 @@ COPY log.xml /mps/bin/log.xml
 
 FROM debian-base
 
-RUN apt update && apt install openjdk-17-jre -y
+RUN apt install openjdk-17-jre xterm -y
 
 COPY --from=prepare-mps --chown=1000:1000 /mps /mps
 COPY 99-set-user-home.sh /etc/cont-init.d/99-set-user-home.sh
 COPY startapp.sh /startapp.sh
+COPY pre-startup.sh /pre-startup.sh
 ENV APP_NAME="MPS"
 ENV KEEP_APP_RUNNING=1
 
