@@ -34,7 +34,7 @@ COPY log.xml /mps/bin/log.xml
 
 FROM debian-base
 
-RUN apt install openjdk-17-jre xterm -y
+RUN apt install openjdk-17-jre xterm git -y
 
 COPY --from=prepare-mps --chown=1000:1000 /mps /mps
 COPY 99-set-user-home.sh /etc/cont-init.d/99-set-user-home.sh
