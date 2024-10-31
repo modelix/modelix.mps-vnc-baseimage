@@ -13,6 +13,7 @@ These are the files and folders that are considered to be the public API of this
 | `/mps-config`         | Configuration files of MPS. They are usually create automatically after the first start, but pre-configuring MPS improves the user experience.                                                                                 |
 | `/mps-user-home`      | Home directory of the user used to run MPS.                                                                                                                                                                                    |
 | `/mps-projects`       | All sub-folders are opened as MPS projects automatically at startup. It already contains an empty default project that can be deleted when an actual project is provided.                                                      |
+| `/run-indexer.sh`     | Runs MPS in headless mode on all MPS projects and initializes the indexes.                                                                                                                                                     |
 
 # Environment Variables
 

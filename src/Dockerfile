@@ -40,6 +40,7 @@ COPY --from=prepare-mps --chown=1000:1000 /mps /mps
 COPY 99-set-user-home.sh /etc/cont-init.d/99-set-user-home.sh
 COPY startapp.sh /startapp.sh
 COPY pre-startup.sh /pre-startup.sh
+COPY run-indexer.sh /run-indexer.sh
 ENV APP_NAME="MPS"
 ENV KEEP_APP_RUNNING=1
 
@@ -69,4 +70,4 @@ RUN    chown -R 1000:1000 /config \
     && chown -R 1000:1000 /mps/
 
 # Run indexer
-RUN for f in /config/home/mps-projects/*; do /mps/bin/mps.sh warmup --project-dir="$f";done
+RUN /run-indexer.sh

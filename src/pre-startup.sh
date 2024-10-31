@@ -20,11 +20,11 @@ echo '<application>' > $RECENT_PROJECTS_FILE
 echo '  <component name="RecentProjectsManager">' >> $RECENT_PROJECTS_FILE
 echo '    <option name="additionalInfo">' >> $RECENT_PROJECTS_FILE
 echo '      <map>' >> $RECENT_PROJECTS_FILE
-for f in /config/home/mps-projects/*
-do
-  echo "        <entry key=\"$f\">" >> $RECENT_PROJECTS_FILE
+find /config/home/mps-projects -type d -name "*.mps" | while read -r dir; do
+  PROJECT_DIR="$(dirname "$dir")"
+  echo "        <entry key=\"$PROJECT_DIR\">" >> $RECENT_PROJECTS_FILE
   echo '          <value>' >> $RECENT_PROJECTS_FILE
-  echo "            <RecentProjectMetaInfo frameTitle=\"$f\" opened=\"true\" />" >> $RECENT_PROJECTS_FILE
+  echo "            <RecentProjectMetaInfo frameTitle=\"$PROJECT_DIR\" opened=\"true\" />" >> $RECENT_PROJECTS_FILE
   echo '          </value>' >> $RECENT_PROJECTS_FILE
   echo '        </entry>' >> $RECENT_PROJECTS_FILE
 done
