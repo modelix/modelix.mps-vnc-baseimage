@@ -71,4 +71,4 @@ RUN set -e \
     && ln -s "/config/xdg/config/Modelix" "/config/xdg/config/JetBrains"
 
 # Run indexer
-#RUN /run-indexer.sh
+RUN /run-indexer.sh
