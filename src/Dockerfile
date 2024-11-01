@@ -1,5 +1,6 @@
 
 FROM jlesage/baseimage-gui:debian-12-v4 AS debian-base
+# For documentation see https://github.com/jlesage/docker-baseimage-gui
 
 RUN apt update && apt install zip unzip wget -y
 
@@ -34,10 +35,16 @@ COPY log.xml /mps/bin/log.xml
 
 FROM debian-base
 
-RUN apt install openjdk-17-jre xterm git -y
+# run as root
+ENV USER_ID=0
+ENV GROUP_ID=0
+RUN mkdir -p /config/home && rm -rf /root && ln -s /config/home /root
+COPY 10-init-users.sh /etc/cont-init.d/10-init-users.sh
 
-COPY --from=prepare-mps --chown=1000:1000 /mps /mps
-COPY 99-set-user-home.sh /etc/cont-init.d/99-set-user-home.sh
+RUN apt install openjdk-17-jre xterm maven ant git -y
+
+COPY --from=prepare-mps /mps /mps
+#COPY 99-set-user-home.sh /etc/cont-init.d/99-set-user-home.sh
 COPY startapp.sh /startapp.sh
 COPY pre-startup.sh /pre-startup.sh
 COPY run-indexer.sh /run-indexer.sh
@@ -53,21 +60,15 @@ RUN mkdir /mps-plugins \
 COPY install-plugins.sh /
 
 # default MPS project
-COPY --chown=1000:1000 default-mps-project /config/home/mps-projects/default-mps-project
+COPY default-mps-project /config/home/mps-projects/default-mps-project
 
 # MPS config directory
-COPY --chown=1000:1000 mps-config /config/xdg/config/Modelix/current
+COPY mps-config /config/xdg/config/Modelix/current
 RUN set -e \
     && MPS_MAJOR_VERSION="$(grep "mpsBootstrapCore.version=" /mps/build.properties|cut -d'=' -f2)" \
     && mv "/config/xdg/config/Modelix/current" "/config/xdg/config/Modelix/MPS${MPS_MAJOR_VERSION}" \
     && ln -s "/config/xdg/config/Modelix/MPS${MPS_MAJOR_VERSION}" "/mps-config" \
     && ln -s "/config/xdg/config/Modelix" "/config/xdg/config/JetBrains"
 
-# permissions
-RUN    chown -R 1000:1000 /config \
-    && chown -R 1000:1000 /mps-plugins \
-    && chown -R 1000:1000 /mps-languages \
-    && chown -R 1000:1000 /mps/
-
 # Run indexer
-RUN /run-indexer.sh
+#RUN /run-indexer.sh
