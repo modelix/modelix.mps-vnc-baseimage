@@ -69,5 +69,9 @@ RUN    chown -R 1000:1000 /config \
     && chown -R 1000:1000 /mps-languages \
     && chown -R 1000:1000 /mps/
 
+RUN useradd --home /config/home app
+
 # Run indexer
+USER app
 RUN /run-indexer.sh
+USER root
