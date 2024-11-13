@@ -4,7 +4,7 @@
 
 set -x
 
-find / -type d -name "*.mps" \
+find / -type d -name ".mps" \
     -not -path "/bin/*" \
     -not -path "/boot/*" \
     -not -path "/defaults/*" \
