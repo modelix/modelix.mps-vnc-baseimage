@@ -41,6 +41,7 @@ COPY 99-set-user-home.sh /etc/cont-init.d/99-set-user-home.sh
 COPY startapp.sh /startapp.sh
 COPY pre-startup.sh /pre-startup.sh
 COPY run-indexer.sh /run-indexer.sh
+COPY update-recent-projects.sh /update-recent-projects.sh
 ENV APP_NAME="MPS"
 ENV KEEP_APP_RUNNING=1
 
