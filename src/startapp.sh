@@ -7,8 +7,8 @@ set -x
 mkdir -p /tmp/startup
 (
   cd /tmp/startup
-  #/pre-startup.sh
-  xterm -e "/pre-startup.sh"
+  /pre-startup.sh
+  #xterm -e "/pre-startup.sh"
 )
 
 # Run MPS
