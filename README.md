@@ -19,4 +19,9 @@ These are the files and folders that are considered to be the public API of this
 
 | Variable               | Description                                            |
 |------------------------|--------------------------------------------------------|
-| PRE_STARTUP_SCRIPT_URL | Download and run this shell script before starting MPS | 
+| PRE_STARTUP_SCRIPT_URL | Download and run this shell script before starting MPS |
+
+
+# Publishing
+
+Create a new git tag and then trigger the _Publish_ workflow on Github for each MPS version that needs to be supported.
