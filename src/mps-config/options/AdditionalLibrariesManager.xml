@@ -10,6 +10,14 @@
                         </Library>
                     </value>
                 </entry>
+                <entry key="mps-projects">
+                    <value>
+                        <Library>
+                            <option name="name" value="mps-projects" />
+                            <option name="path" value="$USER_HOME$/mps-projects" />
+                        </Library>
+                    </value>
+                </entry>
             </map>
         </option>
     </component>
