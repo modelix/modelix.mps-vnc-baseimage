@@ -34,6 +34,13 @@ COPY log.xml /mps/bin/log.xml
 
 FROM debian-base
 
+# ensure MPS uses the same directories during index warmup and final startup
+RUN echo "/config/home" > /etc/cont-env.d/HOME
+RUN echo "/config/home/.cache" > /etc/cont-env.d/XDG_CACHE_HOME
+RUN echo "/config/home/.config" > /etc/cont-env.d/XDG_CONFIG_HOME
+RUN echo "/config/home/.local/share" > /etc/cont-env.d/XDG_DATA_HOME
+RUN echo "/config/home/.local/state" > /etc/cont-env.d/XDG_STATE_HOME
+
 RUN apt install openjdk-17-jre xterm git curl maven ant -y
 
 COPY --from=prepare-mps --chown=1000:1000 /mps /mps
@@ -57,12 +64,12 @@ COPY install-plugins.sh /
 COPY --chown=1000:1000 default-mps-project /config/home/mps-projects/default-mps-project
 
 # MPS config directory
-COPY --chown=1000:1000 mps-config /config/xdg/config/Modelix/current
+COPY --chown=1000:1000 mps-config /config/home/.config/Modelix/current
 RUN set -e \
     && MPS_MAJOR_VERSION="$(grep "mpsBootstrapCore.version=" /mps/build.properties|cut -d'=' -f2)" \
-    && mv "/config/xdg/config/Modelix/current" "/config/xdg/config/Modelix/MPS${MPS_MAJOR_VERSION}" \
-    && ln -s "/config/xdg/config/Modelix/MPS${MPS_MAJOR_VERSION}" "/mps-config" \
-    && ln -s "/config/xdg/config/Modelix" "/config/xdg/config/JetBrains"
+    && mv "/config/home/.config/Modelix/current" "/config/home/.config/Modelix/MPS${MPS_MAJOR_VERSION}" \
+    && ln -s "/config/home/.config/Modelix/MPS${MPS_MAJOR_VERSION}" "/mps-config" \
+    && ln -s "/config/home/.config/Modelix" "/config/home/.config/JetBrains"
 
 # permissions
 RUN    chown -R 1000:1000 /config \
