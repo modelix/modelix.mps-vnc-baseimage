@@ -4,6 +4,8 @@
 
 set -x
 
+export HOME=/config/home
+
 mkdir -p /tmp/startup
 (
   cd /tmp/startup
