@@ -40,7 +40,9 @@ do
   PROJECT_DIR="$(dirname "$dir")"
   echo "        <entry key=\"$PROJECT_DIR\">" >> $RECENT_PROJECTS_FILE
   echo '          <value>' >> $RECENT_PROJECTS_FILE
-  echo "            <RecentProjectMetaInfo frameTitle=\"$PROJECT_DIR\" opened=\"true\" />" >> $RECENT_PROJECTS_FILE
+  echo "            <RecentProjectMetaInfo frameTitle=\"$PROJECT_DIR\" opened=\"true\">" >> $RECENT_PROJECTS_FILE
+  echo '              <frame extendedState="6" />' >> $RECENT_PROJECTS_FILE
+  echo '            </RecentProjectMetaInfo>' >> $RECENT_PROJECTS_FILE
   echo '          </value>' >> $RECENT_PROJECTS_FILE
   echo '        </entry>' >> $RECENT_PROJECTS_FILE
 done
