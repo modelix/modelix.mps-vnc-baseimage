@@ -21,9 +21,9 @@ while IFS= read -r line; do
   unzip -d $ZIP_OUTPUT_DIR $line
 done
 
-find $SOURCE_FOLDER -path '**/META-INF/plugin.xml' |
+find $SOURCE_FOLDER -path '**/lib' |
 while IFS= read -r line; do
-  PLUGIN_DIR="$(dirname "$(dirname $line)")"
+  PLUGIN_DIR="$(dirname $line)"
   mv $PLUGIN_DIR $TARGET_FOLDER
   echo "Installed plugin from $PLUGIN_DIR"
 done
