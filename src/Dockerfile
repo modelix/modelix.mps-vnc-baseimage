@@ -17,7 +17,9 @@ RUN set -e \
 
 RUN echo "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5071" >> /mps/bin/mps64.vmoptions \
         && sed -i.bak '/-Xmx/d' /mps/bin/mps64.vmoptions \
-        && echo "-XX:MaxRAMPercentage=85" >> /mps/bin/mps64.vmoptions
+        && echo "-XX:MaxRAMPercentage=85" >> /mps/bin/mps64.vmoptions \
+        && echo "-Didea.disable.collect.statistics=true" >> /mps/bin/mps64.vmoptions \
+        && cat /mps/bin/mps64.vmoptions > /mps/bin/mps.vmoptions
 
 # An "End User Agreement" dialog prevents the startup if the vendor name is 'JetBrains'
 # See
