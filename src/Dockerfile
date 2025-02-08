@@ -15,6 +15,9 @@ RUN set -e \
     && tar -xf $(ls | head -n 1) \
     && mv "MPS $MPS_MAJOR_VERSION" "/mps"
 
+COPY replace-jbr.sh /replace-jbr.sh
+RUN /replace-jbr.sh
+
 RUN echo "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5071" >> /mps/bin/mps64.vmoptions \
         && sed -i.bak '/-Xmx/d' /mps/bin/mps64.vmoptions \
         && echo "-XX:MaxRAMPercentage=85" >> /mps/bin/mps64.vmoptions \
@@ -43,6 +46,7 @@ RUN echo "/config/home/.config" > /etc/cont-env.d/XDG_CONFIG_HOME
 RUN echo "/config/home/.local/share" > /etc/cont-env.d/XDG_DATA_HOME
 RUN echo "/config/home/.local/state" > /etc/cont-env.d/XDG_STATE_HOME
 
+# installing openjdk will install all the dependencies required by the bundled JBR
 RUN apt install openjdk-17-jre xterm git curl maven ant -y
 
 COPY --from=prepare-mps --chown=1000:1000 /mps /mps
@@ -85,3 +89,5 @@ RUN useradd --home /config/home app
 USER app
 RUN /run-indexer.sh
 USER root
+
+ENV MPS_JDK=/mps/jbr
