@@ -16,7 +16,7 @@ function tryDownloadJbr() {
   # Only proceed if the architecture is aarch64
   if [ "$OS_ARCH" != "aarch64" ]; then
       echo "Skipping download and extraction: Architecture is not aarch64."
-      return 1
+      return 0
   fi
 
   # Read the release file
