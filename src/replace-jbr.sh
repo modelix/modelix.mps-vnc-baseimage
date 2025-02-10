@@ -4,21 +4,21 @@ set -e
 # There is only a linux distribution of MPS for amd64.
 # This script replaces the bundled JBR with the arm version.
 
+# Get the system architecture
+OS_ARCH=$(uname -m)
+if [ "$OS_ARCH" = "arm64" ]; then
+    OS_ARCH="aarch64"
+fi
+
+# Only proceed if the architecture is aarch64
+if [ "$OS_ARCH" != "aarch64" ]; then
+    echo "Skipping download and extraction: Architecture is not aarch64."
+    exit 0
+fi
+
 JBR_ARCHIVE="/jbr.tar.gz"
 
 function tryDownloadJbr() {
-  # Get the system architecture
-  OS_ARCH=$(uname -m)
-  if [ "$OS_ARCH" = "arm64" ]; then
-      OS_ARCH="aarch64"
-  fi
-
-  # Only proceed if the architecture is aarch64
-  if [ "$OS_ARCH" != "aarch64" ]; then
-      echo "Skipping download and extraction: Architecture is not aarch64."
-      return 0
-  fi
-
   # Read the release file
   RELEASE_FILE="/mps/jbr/release"
   if [ ! -f "$RELEASE_FILE" ]; then
